@@ -1,123 +1,235 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mi portafolio tecnológico</title>
+
   <style>
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f4f6fb;
       color: #1e293b;
+      background: #f1f5f9;
     }
 
     header {
       background: #172554;
       color: white;
-      padding: 24px;
+      padding: 18px 24px;
+    }
+
+    header h1 {
+      margin: 0 0 6px;
+      font-size: 24px;
+    }
+
+    header p {
+      margin: 0;
+      color: #cbd5e1;
     }
 
     .layout {
       display: flex;
-      min-height: calc(100vh - 90px);
+      height: calc(100vh - 85px);
+      min-height: 400px;
     }
 
     nav {
       width: 250px;
       flex-shrink: 0;
+      overflow-y: auto;
       background: white;
-      padding: 20px;
-      border-right: 1px solid #ddd;
+      padding: 20px 12px;
+      border-right: 1px solid #dbe2ea;
+    }
+
+    nav h2 {
+      font-size: 14px;
+      padding: 0 10px;
+      color: #64748b;
+      text-transform: uppercase;
     }
 
     nav a {
       display: block;
-      color: #334155;
-      text-decoration: none;
-      padding: 12px;
+      padding: 12px 10px;
+      margin: 4px 0;
       border-radius: 8px;
-      margin-bottom: 6px;
+      text-decoration: none;
+      color: #334155;
+      font-size: 14px;
     }
 
-    nav a:hover {
+    nav a:hover,
+    nav a.active {
       background: #e0e7ff;
       color: #3730a3;
     }
 
-    main {
-      padding: 32px;
-      max-width: 1000px;
+    nav a.disabled {
+      color: #94a3b8;
+      cursor: default;
     }
 
-    .project {
-      display: block;
+    .content {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .toolbar {
       background: white;
-      padding: 22px;
-      margin: 16px 0;
-      border-radius: 12px;
-      border: 1px solid #e2e8f0;
-      color: inherit;
-      text-decoration: none;
+      border-bottom: 1px solid #dbe2ea;
+      padding: 12px 18px;
+      font-size: 14px;
     }
 
-    .project:hover {
-      border-color: #6366f1;
-      box-shadow: 0 4px 14px #0000000d;
+    iframe {
+      width: 100%;
+      flex: 1;
+      min-height: 0;
+      border: 0;
+      background: white;
     }
-
-    .project h3 { margin-top: 0; }
 
     @media (max-width: 650px) {
-      .layout { flex-direction: column; }
-      nav { width: 100%; border-right: 0; }
-      main { padding: 20px; }
+      .layout {
+        height: calc(100vh - 100px);
+      }
+
+      nav {
+        width: 145px;
+        padding: 12px 6px;
+      }
+
+      nav a {
+        font-size: 12px;
+        padding: 10px 6px;
+      }
+
+      header h1 { font-size: 20px; }
+      header p { font-size: 12px; }
     }
   </style>
 </head>
+
 <body>
 
 <header>
   <h1>Mi portafolio tecnológico</h1>
-  <p>Automatización de procesos, análisis de datos e innovación.</p>
+  <p>Automatización de procesos, análisis de datos e innovación</p>
 </header>
 
 <div class="layout">
+
   <nav>
-    <strong>Mis proyectos</strong>
-    <a href="#inicio">Inicio</a>
-    <a href="proyectos/obligaciones/">01. Control de obligaciones</a>
-    <a href="#proyecto-2">02. Proyecto 2</a>
-    <a href="#proyecto-3">03. Proyecto 3</a>
-  </nav>
+    <h2>Navegación</h2>
 
-  <main id="inicio">
-    <h2>Explora mis proyectos</h2>
-    <p>
-      Demostraciones interactivas de herramientas de gestión,
-      automatización y análisis. Los datos son ficticios.
-    </p>
+    <a href="#inicio" class="active"
+       data-page="inicio">Inicio</a>
 
-    <a class="project" href="proyectos/obligaciones/">
-      <h3>01. Control de obligaciones</h3>
-      <p>Consulta de vencimientos, estados y seguimiento de pagos.</p>
-      <strong>Abrir demostración →</strong>
+    <h2>Mis proyectos</h2>
+
+    <a href="#obligaciones"
+       data-page="proyectos/obligaciones/">
+      01. Control de obligaciones
     </a>
 
-    <div class="project" id="proyecto-2">
-      <h3>02. Próximo proyecto</h3>
-      <p>Aquí incorporaremos la segunda demostración.</p>
+    <a href="#proyecto-2" class="disabled"
+       data-coming="true">02. Próximamente</a>
+
+    <a href="#proyecto-3" class="disabled"
+       data-coming="true">03. Próximamente</a>
+
+    <a href="#proyecto-4" class="disabled"
+       data-coming="true">04. Próximamente</a>
+
+    <a href="#proyecto-5" class="disabled"
+       data-coming="true">05. Próximamente</a>
+
+    <a href="#proyecto-6" class="disabled"
+       data-coming="true">06. Próximamente</a>
+
+    <a href="#proyecto-7" class="disabled"
+       data-coming="true">07. Próximamente</a>
+
+    <a href="#proyecto-8" class="disabled"
+       data-coming="true">08. Próximamente</a>
+
+    <a href="#proyecto-9" class="disabled"
+       data-coming="true">09. Próximamente</a>
+
+    <a href="#proyecto-10" class="disabled"
+       data-coming="true">10. Próximamente</a>
+
+    <a href="#proyecto-11" class="disabled"
+       data-coming="true">11. Próximamente</a>
+
+    <a href="#proyecto-12" class="disabled"
+       data-coming="true">12. Próximamente</a>
+
+    <a href="#proyecto-13" class="disabled"
+       data-coming="true">13. Próximamente</a>
+
+    <a href="#proyecto-14" class="disabled"
+       data-coming="true">14. Próximamente</a>
+
+    <a href="#proyecto-15" class="disabled"
+       data-coming="true">15. Próximamente</a>
+  </nav>
+
+  <section class="content">
+    <div class="toolbar" id="page-title">
+      Inicio · Mi portafolio
     </div>
 
-    <div class="project" id="proyecto-3">
-      <h3>03. Próximo proyecto</h3>
-      <p>Aquí incorporaremos la tercera demostración.</p>
-    </div>
-  </main>
+    <iframe
+      id="project-frame"
+      title="Contenido del portafolio"
+      src="inicio.html">
+    </iframe>
+  </section>
+
 </div>
+
+<script>
+  const frame = document.getElementById("project-frame");
+  const title = document.getElementById("page-title");
+  const links = document.querySelectorAll("nav a[data-page]");
+
+  const titles = {
+    "inicio": "Inicio · Mi portafolio",
+    "proyectos/obligaciones/": "01 · Control de obligaciones"
+  };
+
+  links.forEach(link => {
+    link.addEventListener("click", event => {
+      event.preventDefault();
+
+      const page = link.dataset.page;
+
+      frame.src = page === "inicio"
+        ? "inicio.html"
+        : page;
+
+      title.textContent = titles[page] || link.textContent.trim();
+
+      links.forEach(item => item.classList.remove("active"));
+      link.classList.add("active");
+    });
+  });
+
+  document.querySelectorAll("[data-coming]").forEach(link => {
+    link.addEventListener("click", event => {
+      event.preventDefault();
+      alert("Este proyecto todavía está en preparación.");
+    });
+  });
+</script>
 
 </body>
 </html>
