@@ -1,0 +1,286 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bienvenido a mi portafolio</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 30px;
+      font-family: Arial, sans-serif;
+      color: #1e293b;
+      background: #f8fafc;
+      line-height: 1.65;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      color: #4f46e5;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    h1 {
+      color: #172554;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.2;
+      margin: 12px 0;
+    }
+
+    h2 {
+      color: #172554;
+      font-size: 21px;
+      margin-top: 0;
+    }
+
+    .intro {
+      font-size: 17px;
+      color: #475569;
+      max-width: 720px;
+    }
+
+    .divider {
+      height: 1px;
+      background: #e2e8f0;
+      margin: 30px 0;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 24px;
+      margin: 18px 0;
+    }
+
+    .notice {
+      background: #eef2ff;
+      border-left: 4px solid #6366f1;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 28px;
+    }
+
+    .notice h2 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .notice p {
+      margin: 8px 0;
+      font-size: 14px;
+      color: #334155;
+    }
+
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .skill {
+      background: #e2e8f0;
+      color: #334155;
+      border-radius: 20px;
+      padding: 7px 12px;
+      font-size: 13px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .step {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .number {
+      color: #4f46e5;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .step h3 {
+      margin: 8px 0;
+      font-size: 16px;
+    }
+
+    .step p {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 0;
+    }
+
+    footer {
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid #e2e8f0;
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    @media (max-width: 650px) {
+      body { padding: 20px 14px; }
+      .card { padding: 18px; }
+      .steps { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+
+    <div class="eyebrow">Portafolio profesional</div>
+
+    <h1>De los procesos a las soluciones digitales.</h1>
+
+    <p class="intro">
+      Soy contador público con más de 10 años de experiencia en
+      procesos contables, gestión y mejora operativa. A lo largo de
+      mi trayectoria he encontrado en la tecnología una oportunidad
+      para transformar tareas repetitivas en herramientas que
+      simplifican el trabajo, mejoran el control y facilitan la toma
+      de decisiones.
+    </p>
+
+    <div class="divider"></div>
+
+    <section class="card">
+      <h2>Mi perfil</h2>
+
+      <p>
+        Mi experiencia combina el conocimiento de los procesos
+        empresariales y contables con la automatización, el análisis
+        de datos y el desarrollo de soluciones digitales.
+      </p>
+
+      <p>
+        He trabajado en la creación de herramientas para gestionar
+        actividades, hacer seguimiento a obligaciones, organizar
+        flujos de trabajo y mejorar la disponibilidad de información.
+        Mi enfoque parte de entender el problema operativo y diseñar
+        una solución práctica, útil y sostenible.
+      </p>
+
+      <p>
+        También utilizo inteligencia artificial como apoyo al
+        desarrollo, la exploración de alternativas y la construcción
+        de código, combinándola con análisis, pruebas y validación
+        del resultado.
+      </p>
+
+      <div class="skills">
+        <span class="skill">Excel avanzado</span>
+        <span class="skill">Power Query</span>
+        <span class="skill">VBA y macros</span>
+        <span class="skill">Google Apps Script</span>
+        <span class="skill">Power BI</span>
+        <span class="skill">Automatización de procesos</span>
+        <span class="skill">Análisis de datos</span>
+        <span class="skill">Inteligencia artificial aplicada</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>¿Qué encontrarás aquí?</h2>
+
+      <p>
+        Este portafolio reúne demostraciones interactivas inspiradas
+        en soluciones de gestión, automatización y análisis de
+        información. Cada proyecto busca mostrar cómo una necesidad
+        operativa puede convertirse en una herramienta digital.
+      </p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="number">01 · EXPLORAR</div>
+          <h3>Conoce la solución</h3>
+          <p>
+            Identifica el problema que aborda cada herramienta y
+            el proceso que busca facilitar.
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="number">02 · INTERACTUAR</div>
+          <h3>Prueba sus funciones</h3>
+          <p>
+            Utiliza los filtros, formularios, botones y opciones
+            disponibles para explorar la experiencia.
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="number">03 · COMPRENDER</div>
+          <h3>Evalúa el enfoque</h3>
+          <p>
+            Observa cómo se combinan lógica de negocio, datos,
+            automatización y diseño funcional.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="notice">
+      <h2>Nota importante sobre las demostraciones</h2>
+
+      <p>
+        <strong>Entorno de demostración:</strong> los proyectos de
+        este portafolio tienen fines exclusivamente demostrativos
+        y educativos. Los registros, nombres, identificaciones,
+        fechas, valores y demás datos utilizados son ficticios o
+        simulados y no corresponden intencionalmente a información
+        real de personas o empresas.
+      </p>
+
+      <p>
+        Cualquier parecido con personas, empresas, situaciones o
+        registros reales es mera coincidencia.
+      </p>
+
+      <p>
+        <strong>Interactividad simulada:</strong> las acciones
+        disponibles permiten explorar el funcionamiento de las
+        interfaces. No implican necesariamente que exista un proceso
+        real, una conexión con sistemas externos, un registro oficial
+        o una transacción efectiva.
+      </p>
+
+      <p>
+        Estas demostraciones no deben utilizarse para tomar
+        decisiones contables, financieras, tributarias, laborales
+        o legales. No representan sistemas productivos ni sustituyen
+        la validación profesional de la información.
+      </p>
+    </section>
+
+    <footer>
+      <strong>Gracias por visitar mi portafolio.</strong>
+      <p>
+        Te invito a explorar los proyectos desde el menú lateral
+        y conocer distintas formas de aplicar la tecnología a la
+        mejora de procesos.
+      </p>
+    </footer>
+
+  </main>
+</body>
+</html>
