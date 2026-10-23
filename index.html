@@ -1,518 +1,123 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Demostración interactiva de control de vencimientos de seguridad social. Datos ficticios; sin backend.">
-  <title>Control de obligaciones · Demo interactiva</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Mi portafolio tecnológico</title>
   <style>
-    :root {
-      --bg: #f4f7fb; --surface: #ffffff; --surface-2: #f8fafc; --text: #172033;
-      --muted: #6d7890; --border: #e3e9f2; --primary: #3157d5; --primary-strong: #2444b5;
-      --primary-soft: #eaf0ff; --accent: #19a88b; --danger: #d94b5b; --warning: #c88718;
-      --shadow: 0 12px 32px rgba(25, 43, 79, .07); --radius: 18px;
-    }
     * { box-sizing: border-box; }
-    body { margin: 0; background: var(--bg); color: var(--text); font-family: "DM Sans", sans-serif; transition: background .25s, color .25s; }
-    body[data-theme="dark"] {
-      --bg: #101521; --surface: #171f2e; --surface-2: #1c2637; --text: #edf2fb;
-      --muted: #a3afc4; --border: #2c394d; --primary: #91a9ff; --primary-strong: #b0c0ff;
-      --primary-soft: #263453; --accent: #58d7bb; --danger: #ff8491; --warning: #f2c36d;
-      --shadow: 0 12px 32px rgba(0, 0, 0, .18);
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6fb;
+      color: #1e293b;
     }
-    body[data-palette="emerald"] { --primary:#087f67; --primary-strong:#066651; --primary-soft:#e1f6ef; --accent:#e5a33d; }
-    body[data-palette="violet"] { --primary:#7546c8; --primary-strong:#6034ad; --primary-soft:#f0e9ff; --accent:#17a8a1; }
-    body[data-palette="sunset"] { --primary:#c64d35; --primary-strong:#a83c29; --primary-soft:#fff0e9; --accent:#d99a2b; }
-    body[data-palette="ocean"] { --primary:#087eaf; --primary-strong:#07668e; --primary-soft:#e4f5fc; --accent:#1ba58a; }
-    body[data-palette="graphite"] { --primary:#475569; --primary-strong:#334155; --primary-soft:#edf1f5; --accent:#0d9488; }
-    body[data-theme="dark"][data-palette="emerald"] { --primary:#6cddbd; --primary-strong:#92ecd3; --primary-soft:#193a35; }
-    body[data-theme="dark"][data-palette="violet"] { --primary:#c0a0ff; --primary-strong:#d3bdff; --primary-soft:#342747; }
-    body[data-theme="dark"][data-palette="sunset"] { --primary:#ffad98; --primary-strong:#ffc2b2; --primary-soft:#472a28; }
-    body[data-theme="dark"][data-palette="ocean"] { --primary:#78d4fa; --primary-strong:#a1e2ff; --primary-soft:#1d3948; }
-    body[data-theme="dark"][data-palette="graphite"] { --primary:#cbd5e1; --primary-strong:#e2e8f0; --primary-soft:#303a49; }
-    button, input, select { font: inherit; }
-    button { cursor: pointer; }
-    button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid color-mix(in srgb, var(--primary) 40%, transparent); outline-offset: 2px; }
-    .app-shell { min-height: 100vh; }
-    .topbar { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--surface) 92%, transparent); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-    .topbar-inner { max-width: 1440px; margin: auto; padding: 13px 28px; display:flex; align-items:center; gap:22px; }
-    .brand { display:flex; align-items:center; gap:11px; min-width: 260px; }
-    .brand-mark { width:42px; height:42px; display:grid; place-items:center; background:var(--primary-soft); color:var(--primary); border-radius:13px; }
-    .brand-mark svg { width:23px; height:23px; }
-    .brand-title { font:800 15px Manrope,sans-serif; letter-spacing:-.3px; }
-    .brand-sub { font-size:11px; color:var(--muted); margin-top:2px; }
-    .top-actions { margin-left:auto; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-    .palette-wrap { display:flex; align-items:center; gap:5px; padding:4px; border:1px solid var(--border); background:var(--surface-2); border-radius:12px; }
-    .palette-btn { width:25px; height:25px; border-radius:8px; border:2px solid transparent; padding:0; position:relative; }
-    .palette-btn[aria-pressed="true"] { outline:2px solid var(--text); outline-offset:2px; }
-    .palette-btn span { display:block; width:100%; height:100%; border-radius:6px; }
-    .icon-btn, .btn { border:1px solid var(--border); border-radius:11px; padding:10px 13px; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:700; font-size:12px; color:var(--text); background:var(--surface); transition:transform .15s, background .2s; }
-    .icon-btn:hover, .btn:hover { transform:translateY(-1px); }
-    .icon-btn { width:41px; height:41px; padding:0; font-size:17px; }
-    .btn-primary { background:var(--primary); color:white; border-color:var(--primary); }
-    body[data-theme="dark"] .btn-primary { color:#101521; }
-    .btn-soft { background:var(--primary-soft); color:var(--primary-strong); border-color:transparent; }
-    .btn-danger { color:var(--danger); background:color-mix(in srgb,var(--danger) 9%,var(--surface)); border-color:color-mix(in srgb,var(--danger) 20%,var(--border)); }
-    .btn-sm { padding:7px 10px; border-radius:9px; font-size:11px; }
-    .demo-banner { background:linear-gradient(100deg,var(--primary-soft),color-mix(in srgb,var(--accent) 9%,var(--surface))); border-bottom:1px solid var(--border); }
-    .demo-banner-inner { max-width:1440px; margin:auto; padding:9px 28px; display:flex; align-items:center; gap:9px; font-size:12px; color:var(--muted); }
-    .demo-pill { display:inline-flex; align-items:center; gap:6px; background:var(--surface); border:1px solid var(--border); padding:4px 8px; border-radius:100px; color:var(--primary-strong); font-weight:800; font-size:10px; letter-spacing:.5px; text-transform:uppercase; }
-    .demo-pill:before { content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); }
-    main { max-width:1440px; margin:auto; padding:30px 28px 56px; }
-    .page-heading { display:flex; justify-content:space-between; align-items:flex-end; gap:18px; margin-bottom:25px; }
-    .eyebrow { color:var(--primary); font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1.3px; margin-bottom:8px; }
-    h1,h2,h3,p { margin-top:0; }
-    h1 { font:800 clamp(25px,3vw,34px)/1.15 Manrope,sans-serif; letter-spacing:-1.1px; margin-bottom:8px; }
-    .subtitle { color:var(--muted); font-size:14px; margin:0; max-width:720px; line-height:1.6; }
-    .heading-actions { display:flex; gap:9px; flex-wrap:wrap; }
-    .stats-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:15px; margin-bottom:22px; }
-    .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:19px; box-shadow:var(--shadow); min-width:0; }
-    .stat-top { display:flex; justify-content:space-between; align-items:center; gap:10px; color:var(--muted); font-size:12px; font-weight:600; }
-    .stat-icon { width:35px; height:35px; display:grid; place-items:center; border-radius:11px; background:var(--primary-soft); color:var(--primary); font-size:17px; }
-    .stat-number { font:800 30px Manrope,sans-serif; letter-spacing:-1px; margin:14px 0 5px; }
-    .stat-foot { color:var(--muted); font-size:11px; }
-    .stat-foot strong { color:var(--accent); }
-    .panel { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; }
-    .panel-head { padding:20px 21px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:14px; }
-    .panel-title { font:800 15px Manrope,sans-serif; margin:0 0 4px; }
-    .panel-description { font-size:12px; color:var(--muted); margin:0; }
-    .filters { padding:15px 21px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border-bottom:1px solid var(--border); background:var(--surface-2); }
-    .field { display:flex; flex-direction:column; gap:6px; }
-    .field label { font-size:10px; color:var(--muted); font-weight:800; text-transform:uppercase; letter-spacing:.5px; }
-    .control { min-height:38px; padding:8px 11px; border:1px solid var(--border); background:var(--surface); color:var(--text); border-radius:10px; font-size:12px; }
-    .search-field { min-width:220px; flex:1; }
-    .search-field .control { width:100%; }
-    .check-wrap { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted); padding-top:18px; }
-    input[type="checkbox"] { accent-color:var(--primary); width:15px; height:15px; }
-    .table-wrap { width:100%; overflow:auto; }
-    table { border-collapse:collapse; width:100%; min-width:980px; font-size:12px; }
-    thead { background:var(--surface-2); }
-    th { padding:13px 15px; text-align:left; font-size:10px; letter-spacing:.55px; text-transform:uppercase; color:var(--muted); font-weight:800; white-space:nowrap; }
-    td { padding:14px 15px; border-top:1px solid var(--border); vertical-align:middle; }
-    tbody tr:hover { background:color-mix(in srgb,var(--primary-soft) 35%,var(--surface)); }
-    .company-cell { min-width:210px; }
-    .company-name { font-weight:800; font-size:12px; margin-bottom:4px; }
-    .company-id { color:var(--muted); font-size:10px; }
-    .month-tag { background:var(--surface-2); border:1px solid var(--border); padding:5px 8px; border-radius:7px; white-space:nowrap; }
-    .status { display:inline-flex; align-items:center; gap:6px; border-radius:100px; padding:6px 9px; font-size:10px; font-weight:800; white-space:nowrap; }
-    .status:before { content:""; width:6px; height:6px; border-radius:50%; background:currentColor; }
-    .status-pending { background:color-mix(in srgb,var(--warning) 12%,var(--surface)); color:var(--warning); }
-    .status-paid { background:color-mix(in srgb,var(--accent) 12%,var(--surface)); color:var(--accent); }
-    .status-review { background:var(--primary-soft); color:var(--primary); }
-    .status-na { background:color-mix(in srgb,var(--muted) 12%,var(--surface)); color:var(--muted); }
-    .table-actions { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
-    .date-stack { display:flex; flex-direction:column; gap:6px; min-width:130px; }
-    .date-stack .control { min-width:130px; }
-    .small-note { color:var(--muted); font-size:10px; margin-top:4px; }
-    .file-label { font-size:10px; color:var(--muted); display:block; margin-top:4px; max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-    .empty-state { padding:42px 20px; text-align:center; color:var(--muted); }
-    .empty-icon { font-size:28px; margin-bottom:10px; }
-    .table-footer { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:14px 21px; border-top:1px solid var(--border); color:var(--muted); font-size:11px; }
-    .below-grid { display:grid; grid-template-columns:1.15fr .85fr; gap:18px; margin-top:20px; }
-    .activity-list { padding:5px 21px 18px; }
-    .activity-item { display:flex; gap:12px; padding:13px 0; border-bottom:1px solid var(--border); }
-    .activity-item:last-child { border-bottom:0; }
-    .activity-dot { width:32px; height:32px; flex-shrink:0; display:grid; place-items:center; border-radius:10px; background:var(--primary-soft); color:var(--primary); }
-    .activity-title { font-size:12px; font-weight:700; margin:1px 0 4px; }
-    .activity-meta { font-size:10px; color:var(--muted); }
-    .guide-content { padding:20px 21px; }
-    .guide-content p { font-size:12px; color:var(--muted); line-height:1.7; }
-    .guide-steps { display:grid; gap:10px; margin:15px 0 18px; }
-    .guide-step { display:flex; gap:10px; font-size:12px; align-items:flex-start; }
-    .step-num { flex-shrink:0; width:23px; height:23px; border-radius:8px; display:grid; place-items:center; color:var(--primary); background:var(--primary-soft); font-weight:800; font-size:10px; }
-    .footer-note { text-align:center; padding:27px 10px 0; font-size:11px; color:var(--muted); }
-    .modal-backdrop { position:fixed; inset:0; z-index:100; background:rgba(10,17,30,.58); display:none; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(5px); }
-    .modal-backdrop.open { display:flex; }
-    .modal { width:min(560px,100%); max-height:min(88vh,780px); overflow:auto; background:var(--surface); border:1px solid var(--border); border-radius:22px; box-shadow:0 24px 80px rgba(0,0,0,.25); animation:pop .18s ease-out; }
-    @keyframes pop { from { transform:translateY(8px) scale(.99); opacity:.5; } to { transform:translateY(0) scale(1); opacity:1; } }
-    .modal-head { padding:21px 23px; display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1px solid var(--border); gap:12px; }
-    .modal-head h2 { font:800 18px Manrope,sans-serif; margin:0 0 5px; }
-    .modal-head p { margin:0; color:var(--muted); font-size:12px; line-height:1.5; }
-    .modal-body { padding:22px 23px; }
-    .modal-foot { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:16px 23px; border-top:1px solid var(--border); }
-    .modal-form { display:grid; gap:15px; }
-    .modal-form .field .control { width:100%; }
-    .form-hint { background:var(--primary-soft); color:var(--primary-strong); border-radius:11px; padding:11px 12px; font-size:11px; line-height:1.6; }
-    .toast-region { position:fixed; right:22px; bottom:22px; z-index:150; display:grid; gap:9px; width:min(360px,calc(100vw - 44px)); }
-    .toast { display:flex; align-items:flex-start; gap:10px; background:var(--surface); color:var(--text); border:1px solid var(--border); border-left:4px solid var(--accent); box-shadow:var(--shadow); border-radius:13px; padding:13px 15px; font-size:12px; animation:pop .18s ease-out; }
-    .toast strong { display:block; margin-bottom:3px; }
-    .guide-progress { height:5px; border-radius:99px; background:var(--border); overflow:hidden; margin:0 23px; }
-    .guide-progress-bar { height:100%; background:var(--primary); width:33.3%; transition:width .2s; }
-    .kbd { border:1px solid var(--border); background:var(--surface-2); padding:2px 5px; border-radius:5px; font-size:10px; }
-    @media (max-width:1000px) {
-      .brand { min-width:auto; } .brand-sub { display:none; } .stats-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
-      .below-grid { grid-template-columns:1fr; } .topbar-inner { padding:12px 18px; gap:12px; } main { padding:25px 18px 45px; }
-      .demo-banner-inner { padding:9px 18px; }
+
+    header {
+      background: #172554;
+      color: white;
+      padding: 24px;
     }
-    @media (max-width:650px) {
-      .topbar-inner { flex-wrap:wrap; } .brand { flex:1; } .top-actions { width:100%; margin:0; justify-content:space-between; }
-      .palette-wrap { order:2; } .page-heading { display:block; } .heading-actions { margin-top:18px; }
-      .stats-grid { gap:10px; } .stat-card { padding:14px; } .stat-number { font-size:25px; }
-      .filters { align-items:stretch; } .search-field { min-width:100%; } .filters .field { flex:1; }
-      .filters .control { width:100%; } .check-wrap { padding-top:0; }
-      .panel-head { align-items:flex-start; } .panel-head .btn { white-space:nowrap; }
-      .table-footer { align-items:flex-start; flex-direction:column; }
+
+    .layout {
+      display: flex;
+      min-height: calc(100vh - 90px);
     }
-    @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important; transition-duration:.01ms!important; scroll-behavior:auto!important; } }
+
+    nav {
+      width: 250px;
+      flex-shrink: 0;
+      background: white;
+      padding: 20px;
+      border-right: 1px solid #ddd;
+    }
+
+    nav a {
+      display: block;
+      color: #334155;
+      text-decoration: none;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 6px;
+    }
+
+    nav a:hover {
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+
+    main {
+      padding: 32px;
+      max-width: 1000px;
+    }
+
+    .project {
+      display: block;
+      background: white;
+      padding: 22px;
+      margin: 16px 0;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .project:hover {
+      border-color: #6366f1;
+      box-shadow: 0 4px 14px #0000000d;
+    }
+
+    .project h3 { margin-top: 0; }
+
+    @media (max-width: 650px) {
+      .layout { flex-direction: column; }
+      nav { width: 100%; border-right: 0; }
+      main { padding: 20px; }
+    }
   </style>
 </head>
-<body data-theme="light" data-palette="indigo">
-<div class="app-shell">
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div class="brand">
-        <div class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h5M8 16h3"/><path d="m15 15 1.5 1.5L20 13"/></svg>
-        </div>
-        <div><div class="brand-title">Control de obligaciones</div><div class="brand-sub">Panel de vencimientos · Seguridad social</div></div>
-      </div>
-      <div class="top-actions">
-        <div class="palette-wrap" role="group" aria-label="Elegir paleta de colores">
-          <button class="palette-btn" data-palette-choice="indigo" aria-label="Paleta índigo" aria-pressed="true" title="Índigo"><span style="background:#3157d5"></span></button>
-          <button class="palette-btn" data-palette-choice="emerald" aria-label="Paleta esmeralda" aria-pressed="false" title="Esmeralda"><span style="background:#087f67"></span></button>
-          <button class="palette-btn" data-palette-choice="violet" aria-label="Paleta violeta" aria-pressed="false" title="Violeta"><span style="background:#7546c8"></span></button>
-          <button class="palette-btn" data-palette-choice="sunset" aria-label="Paleta coral" aria-pressed="false" title="Coral"><span style="background:#c64d35"></span></button>
-          <button class="palette-btn" data-palette-choice="ocean" aria-label="Paleta océano" aria-pressed="false" title="Océano"><span style="background:#087eaf"></span></button>
-          <button class="palette-btn" data-palette-choice="graphite" aria-label="Paleta grafito" aria-pressed="false" title="Grafito"><span style="background:#475569"></span></button>
-        </div>
-        <button class="icon-btn" id="themeToggle" aria-label="Activar modo oscuro" title="Cambiar tema">☾</button>
-        <button class="btn btn-soft" id="openGuide">✦ Recorrido guiado</button>
-      </div>
+<body>
+
+<header>
+  <h1>Mi portafolio tecnológico</h1>
+  <p>Automatización de procesos, análisis de datos e innovación.</p>
+</header>
+
+<div class="layout">
+  <nav>
+    <strong>Mis proyectos</strong>
+    <a href="#inicio">Inicio</a>
+    <a href="proyectos/obligaciones/">01. Control de obligaciones</a>
+    <a href="#proyecto-2">02. Proyecto 2</a>
+    <a href="#proyecto-3">03. Proyecto 3</a>
+  </nav>
+
+  <main id="inicio">
+    <h2>Explora mis proyectos</h2>
+    <p>
+      Demostraciones interactivas de herramientas de gestión,
+      automatización y análisis. Los datos son ficticios.
+    </p>
+
+    <a class="project" href="proyectos/obligaciones/">
+      <h3>01. Control de obligaciones</h3>
+      <p>Consulta de vencimientos, estados y seguimiento de pagos.</p>
+      <strong>Abrir demostración →</strong>
+    </a>
+
+    <div class="project" id="proyecto-2">
+      <h3>02. Próximo proyecto</h3>
+      <p>Aquí incorporaremos la segunda demostración.</p>
     </div>
-  </header>
 
-  <div class="demo-banner">
-    <div class="demo-banner-inner"><span class="demo-pill">Modo demostración</span><span>Datos ficticios · Las acciones se simulan en este navegador y no se envía información a ningún servidor.</span></div>
-  </div>
-
-  <main>
-    <section class="page-heading">
-      <div>
-        <div class="eyebrow">Panel de control · Operación administrativa</div>
-        <h1>Vencimientos de seguridad social</h1>
-        <p class="subtitle">Consulta obligaciones, revisa fechas límite y simula el registro de pagos desde un único lugar.</p>
-      </div>
-      <div class="heading-actions">
-        <button class="btn" id="resetDemo">↻ Restablecer demo</button>
-        <button class="btn btn-primary" id="summaryButton">▤ Vista previa del resumen</button>
-      </div>
-    </section>
-
-    <section class="stats-grid" aria-label="Resumen de vencimientos">
-      <article class="stat-card"><div class="stat-top"><span>Obligaciones visibles</span><span class="stat-icon">▤</span></div><div class="stat-number" id="statTotal">12</div><div class="stat-foot">En el rango seleccionado</div></article>
-      <article class="stat-card"><div class="stat-top"><span>Pendientes de pago</span><span class="stat-icon">◷</span></div><div class="stat-number" id="statPending">6</div><div class="stat-foot"><strong>Requieren seguimiento</strong></div></article>
-      <article class="stat-card"><div class="stat-top"><span>Pagos registrados</span><span class="stat-icon">✓</span></div><div class="stat-number" id="statPaid">4</div><div class="stat-foot">Incluye registros de ejemplo</div></article>
-      <article class="stat-card"><div class="stat-top"><span>Próximos 7 días</span><span class="stat-icon">◫</span></div><div class="stat-number" id="statSoon">3</div><div class="stat-foot">Según las fechas de demostración</div></article>
-    </section>
-
-    <section class="panel" id="obligationsPanel">
-      <div class="panel-head">
-        <div><h2 class="panel-title">Listado de obligaciones</h2><p class="panel-description">Filtra por fechas, empresa o estado. Puedes probar las acciones en cada fila.</p></div>
-        <span class="demo-pill">Sandbox</span>
-      </div>
-      <div class="filters">
-        <div class="field"><label for="dateFrom">Desde</label><input class="control" type="date" id="dateFrom"></div>
-        <div class="field"><label for="dateTo">Hasta</label><input class="control" type="date" id="dateTo"></div>
-        <div class="field"><label for="statusFilter">Estado</label><select class="control" id="statusFilter"><option value="all">Todos los estados</option><option value="Pendiente">Pendiente</option><option value="Pendiente de pago">Presentado, pendiente pago</option><option value="Pagado">Pagado</option><option value="No aplica">No aplica</option></select></div>
-        <div class="field search-field"><label for="searchInput">Buscar</label><input class="control" type="search" id="searchInput" placeholder="Empresa, NIT o periodo…"></div>
-        <label class="check-wrap"><input type="checkbox" id="showResolved" checked> Incluir resueltos</label>
-        <button class="btn btn-soft" id="clearFilters">Limpiar filtros</button>
-      </div>
-      <div class="table-wrap" id="tableContainer"></div>
-      <div class="table-footer"><span id="resultCount">Mostrando 12 obligaciones de ejemplo</span><span>Los cambios viven solo en esta sesión del navegador.</span></div>
-    </section>
-
-    <section class="below-grid">
-      <article class="panel">
-        <div class="panel-head"><div><h2 class="panel-title">Actividad reciente</h2><p class="panel-description">Historial simulado de acciones en la plataforma.</p></div><span class="demo-pill">En vivo · Demo</span></div>
-        <div class="activity-list" id="activityList"></div>
-      </article>
-      <article class="panel">
-        <div class="panel-head"><div><h2 class="panel-title">Explora la demostración</h2><p class="panel-description">Prueba el flujo de trabajo sin afectar datos reales.</p></div><span style="font-size:22px">✦</span></div>
-        <div class="guide-content">
-          <p>Este prototipo reproduce la experiencia de un panel de control de vencimientos. Sus datos y acciones son locales: no se conecta a Google Sheets, no sube archivos y no envía correos.</p>
-          <div class="guide-steps">
-            <div class="guide-step"><span class="step-num">1</span><span><strong>Filtra obligaciones</strong><br><span style="color:var(--muted)">Usa las fechas, el estado o el buscador.</span></span></div>
-            <div class="guide-step"><span class="step-num">2</span><span><strong>Simula un pago</strong><br><span style="color:var(--muted)">Registra fecha y nombre ficticio de soporte.</span></span></div>
-            <div class="guide-step"><span class="step-num">3</span><span><strong>Cambia la apariencia</strong><br><span style="color:var(--muted)">Prueba las paletas de color y el modo oscuro.</span></span></div>
-          </div>
-          <button class="btn btn-primary" id="openGuideBottom">Iniciar recorrido guiado →</button>
-        </div>
-      </article>
-    </section>
-    <div class="footer-note">Prototipo de portafolio · Interfaz frontend con datos ficticios · No representa asesoría legal o contable.</div>
+    <div class="project" id="proyecto-3">
+      <h3>03. Próximo proyecto</h3>
+      <p>Aquí incorporaremos la tercera demostración.</p>
+    </div>
   </main>
 </div>
 
-<div class="modal-backdrop" id="modalBackdrop" role="presentation">
-  <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal-head"><div><h2 id="modalTitle">Título del modal</h2><p id="modalDescription"></p></div><button class="icon-btn" id="closeModal" aria-label="Cerrar modal">×</button></div>
-    <div id="guideProgressWrap" class="guide-progress" style="display:none"><div class="guide-progress-bar" id="guideProgressBar"></div></div>
-    <div class="modal-body" id="modalBody"></div>
-    <div class="modal-foot" id="modalFoot"></div>
-  </section>
-</div>
-<div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
-
-<script>
-(() => {
-  "use strict";
-
-  // Dataset 100% ficticio. No hay llamadas de red, Apps Script, almacenamiento ni backend.
-  const seedData = [
-    {id:101, nit:"901.245.780-1", company:"Nube Creativa S.A.S.", period:"Septiembre 2026", due:"2026-10-02", status:"Pendiente", paidDate:"", support:"", note:"Pago dentro del plazo"},
-    {id:102, nit:"900.817.362-4", company:"Andina Soluciones S.A.S.", period:"Septiembre 2026", due:"2026-10-05", status:"Pagado", paidDate:"2026-10-04", support:"soporte_pago_andina.pdf", note:""},
-    {id:103, nit:"901.563.290-7", company:"Verde Urbano S.A.S.", period:"Septiembre 2026", due:"2026-10-07", status:"Pendiente de pago", paidDate:"", support:"", note:"Planilla presentada; pago pendiente"},
-    {id:104, nit:"830.114.925-6", company:"Nodo Digital S.A.S.", period:"Septiembre 2026", due:"2026-10-09", status:"Pendiente", paidDate:"", support:"", note:"Pendiente de validación"},
-    {id:105, nit:"901.008.476-2", company:"Trazos y Datos S.A.S.", period:"Septiembre 2026", due:"2026-10-12", status:"Pagado", paidDate:"2026-10-10", support:"comprobante_trazos.pdf", note:""},
-    {id:106, nit:"900.672.183-9", company:"Cumbre Logística S.A.S.", period:"Septiembre 2026", due:"2026-10-14", status:"Pendiente", paidDate:"", support:"", note:""},
-    {id:107, nit:"901.772.409-3", company:"Lumen Consultores S.A.S.", period:"Septiembre 2026", due:"2026-10-16", status:"No aplica", paidDate:"", support:"", note:"Obligación no aplicable"},
-    {id:108, nit:"900.349.561-8", company:"Prisma Comercial S.A.S.", period:"Septiembre 2026", due:"2026-10-19", status:"Pendiente", paidDate:"", support:"", note:""},
-    {id:109, nit:"901.293.804-5", company:"Métrica Laboratorio S.A.S.", period:"Septiembre 2026", due:"2026-10-21", status:"Pagado", paidDate:"2026-10-20", support:"recibo_metrica.pdf", note:""},
-    {id:110, nit:"900.482.617-1", company:"Horizonte Ingeniería S.A.S.", period:"Septiembre 2026", due:"2026-10-23", status:"Pendiente", paidDate:"", support:"", note:"Vencimiento cercano"},
-    {id:111, nit:"901.680.235-0", company:"Páramo Servicios S.A.S.", period:"Octubre 2026", due:"2026-10-27", status:"Pendiente", paidDate:"", support:"", note:""},
-    {id:112, nit:"900.951.374-2", company:"Bitácora Tecnología S.A.S.", period:"Octubre 2026", due:"2026-10-30", status:"Pendiente de pago", paidDate:"", support:"", note:"Presentado, pendiente de pago"}
-  ];
-  let obligations = structuredClone(seedData);
-  let activity = [
-    {icon:"✓", title:"Pago de ejemplo confirmado", detail:"Trazos y Datos S.A.S. · 10 oct 2026"},
-    {icon:"▤", title:"Planilla presentada", detail:"Verde Urbano S.A.S. · Pendiente de pago"},
-    {icon:"↻", title:"Panel de demostración iniciado", detail:"Sesión local · Sin conexión a servicios externos"}
-  ];
-  const $ = id => document.getElementById(id);
-  const fmtDate = iso => iso ? new Date(iso + "T12:00:00").toLocaleDateString("es-CO",{day:"2-digit",month:"short",year:"numeric"}) : "—";
-  const fmtDateShort = iso => iso ? new Date(iso + "T12:00:00").toLocaleDateString("es-CO",{day:"2-digit",month:"2-digit",year:"numeric"}) : "—";
-  const todayISO = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; };
-  const esc = value => String(value ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
-  const statusClass = s => s === "Pagado" ? "status-paid" : s === "Pendiente" ? "status-pending" : s === "Pendiente de pago" ? "status-review" : "status-na";
-  const statusLabel = s => s === "Pendiente de pago" ? "Pendiente de pago" : s;
-  let guideStep = 0;
-  let modalAction = null;
-
-  function showToast(title, message, icon="✓") {
-    const node = document.createElement("div");
-    node.className = "toast";
-    node.innerHTML = `<span style="font-size:17px">${icon}</span><div><strong>${esc(title)}</strong>${esc(message)}</div>`;
-    $("toastRegion").appendChild(node);
-    setTimeout(() => node.remove(), 4200);
-  }
-  function addActivity(title, detail, icon="✓") {
-    activity.unshift({title,detail,icon});
-    activity = activity.slice(0,5);
-    renderActivity();
-  }
-  function renderActivity() {
-    $("activityList").innerHTML = activity.map(a => `<div class="activity-item"><div class="activity-dot">${esc(a.icon)}</div><div><div class="activity-title">${esc(a.title)}</div><div class="activity-meta">${esc(a.detail)}</div></div></div>`).join("");
-  }
-  function getFiltered() {
-    const from = $("dateFrom").value, to = $("dateTo").value;
-    const status = $("statusFilter").value, q = $("searchInput").value.trim().toLocaleLowerCase("es");
-    const includeResolved = $("showResolved").checked;
-    return obligations.filter(o => {
-      if (from && o.due < from) return false;
-      if (to && o.due > to) return false;
-      if (status !== "all" && o.status !== status) return false;
-      if (!includeResolved && (o.status === "Pagado" || o.status === "No aplica")) return false;
-      if (q && !`${o.company} ${o.nit} ${o.period} ${o.note}`.toLocaleLowerCase("es").includes(q)) return false;
-      return true;
-    }).sort((a,b) => a.due.localeCompare(b.due));
-  }
-  function renderTable() {
-    const rows = getFiltered();
-    $("resultCount").textContent = `Mostrando ${rows.length} de ${obligations.length} obligaciones de ejemplo`;
-    $("statTotal").textContent = rows.length;
-    $("statPending").textContent = rows.filter(o => o.status === "Pendiente" || o.status === "Pendiente de pago").length;
-    $("statPaid").textContent = rows.filter(o => o.status === "Pagado").length;
-    const today = todayISO(), week = new Date(); week.setDate(week.getDate()+7);
-    const weekISO = `${week.getFullYear()}-${String(week.getMonth()+1).padStart(2,"0")}-${String(week.getDate()).padStart(2,"0")}`;
-    $("statSoon").textContent = rows.filter(o => o.due >= today && o.due <= weekISO && o.status !== "Pagado" && o.status !== "No aplica").length;
-    if (!rows.length) {
-      $("tableContainer").innerHTML = `<div class="empty-state"><div class="empty-icon">⌕</div><strong>No encontramos obligaciones</strong><p>Prueba con otro rango de fechas o limpia los filtros.</p><button class="btn btn-soft" onclick="document.getElementById('clearFilters').click()">Limpiar filtros</button></div>`;
-      return;
-    }
-    const body = rows.map(o => {
-      const actions = o.status === "Pendiente" || o.status === "Pendiente de pago"
-        ? `<button class="btn btn-primary btn-sm" data-action="pay" data-id="${o.id}">Registrar pago</button><button class="btn btn-sm" data-action="na" data-id="${o.id}">No aplica</button>`
-        : `<button class="btn btn-sm" data-action="detail" data-id="${o.id}">Ver detalle</button>`;
-      let payContent = o.status === "Pagado"
-        ? `<strong>${esc(fmtDateShort(o.paidDate))}</strong><div class="small-note">Pago registrado (demo)</div>`
-        : o.status === "Pendiente de pago"
-          ? `<span style="color:var(--primary);font-weight:700">Planilla presentada</span><div class="small-note">Pendiente de pago</div>`
-          : o.status === "No aplica" ? `<span class="small-note">No requiere pago</span>` : `<span class="small-note">Sin registro</span>`;
-      let support = o.support ? `<span class="file-label" title="${esc(o.support)}">📎 ${esc(o.support)}</span>` : "";
-      return `<tr>
-        <td><div class="company-cell"><div class="company-name">${esc(o.company)}</div><div class="company-id">NIT ${esc(o.nit)}</div></div></td>
-        <td>Seguridad social</td><td><span class="month-tag">${esc(o.period)}</span></td>
-        <td><strong>${esc(fmtDate(o.due))}</strong></td>
-        <td><span class="status ${statusClass(o.status)}">${esc(statusLabel(o.status))}</span></td>
-        <td>${payContent}${support}</td><td><div class="table-actions">${actions}</div></td>
-      </tr>`;
-    }).join("");
-    $("tableContainer").innerHTML = `<table><thead><tr><th>Empresa</th><th>Obligación</th><th>Periodo</th><th>Fecha límite</th><th>Estado</th><th>Pago / soporte</th><th>Acciones</th></tr></thead><tbody>${body}</tbody></table>`;
-  }
-
-  function openModal(title, description, bodyHTML, footerHTML, onReady) {
-    $("modalTitle").textContent = title;
-    $("modalDescription").textContent = description || "";
-    $("modalBody").innerHTML = bodyHTML || "";
-    $("modalFoot").innerHTML = footerHTML || `<span></span><button class="btn btn-primary" id="modalDone">Entendido</button>`;
-    $("guideProgressWrap").style.display = "none";
-    $("modalBackdrop").classList.add("open");
-    document.body.style.overflow = "hidden";
-    modalAction = null;
-    if ($("modalDone")) $("modalDone").addEventListener("click", closeModal);
-    if (onReady) onReady();
-  }
-  function closeModal() {
-    $("modalBackdrop").classList.remove("open");
-    document.body.style.overflow = "";
-    modalAction = null;
-  }
-  function openPayment(id) {
-    const item = obligations.find(o => o.id === id);
-    if (!item) return;
-    openModal("Simular registro de pago", item.company, `
-      <form class="modal-form" id="paymentForm">
-        <div class="form-hint">Estás en un entorno de demostración. El registro solo modifica los datos ficticios de esta página; no se carga ningún archivo ni se envía información.</div>
-        <div class="field"><label for="paymentDate">Fecha de pago</label><input class="control" type="date" id="paymentDate" value="${esc(todayISO())}" required></div>
-        <div class="field"><label for="supportName">Nombre del soporte (opcional)</label><input class="control" id="supportName" placeholder="Ej. comprobante_pago.pdf" maxlength="90"><span class="small-note">Solo se guarda el nombre escrito. No se sube el archivo.</span></div>
-        <div class="field"><label for="paymentNote">Observación</label><input class="control" id="paymentNote" placeholder="Ej. Pago confirmado en la simulación" maxlength="140"></div>
-      </form>`,
-      `<button class="btn" id="cancelPayment">Cancelar</button><button class="btn btn-primary" id="confirmPayment">Guardar simulación</button>`,
-      () => {
-        $("cancelPayment").addEventListener("click", closeModal);
-        $("confirmPayment").addEventListener("click", () => {
-          const date = $("paymentDate").value;
-          if (!date) { showToast("Falta la fecha","Selecciona una fecha para continuar.","!"); return; }
-          item.status = "Pagado"; item.paidDate = date;
-          item.support = $("supportName").value.trim();
-          item.note = $("paymentNote").value.trim();
-          addActivity("Pago simulado registrado", `${item.company} · ${fmtDateShort(date)}`, "✓");
-          closeModal(); renderTable();
-          showToast("Registro de demostración guardado","El cambio solo existe en esta sesión del navegador.");
-        });
-      });
-  }
-  function markNotApplicable(id) {
-    const item = obligations.find(o => o.id === id);
-    if (!item) return;
-    openModal("Marcar como «No aplica»", item.company, `<div class="form-hint">Vas a cambiar el estado de esta obligación ficticia a <strong>No aplica</strong>. Puedes restablecer todos los datos de ejemplo en cualquier momento.</div><p style="font-size:13px;line-height:1.7">¿Quieres simular esta acción para <strong>${esc(item.period)}</strong>?</p>`,
-      `<button class="btn" id="cancelNA">Cancelar</button><button class="btn btn-danger" id="confirmNA">Sí, marcar</button>`,
-      () => {
-        $("cancelNA").addEventListener("click", closeModal);
-        $("confirmNA").addEventListener("click", () => {
-          item.status = "No aplica"; item.note = "Marcado como no aplicable en la demostración";
-          addActivity("Obligación marcada como No aplica", item.company, "–");
-          closeModal(); renderTable(); showToast("Estado actualizado","Cambio simulado localmente.");
-        });
-      });
-  }
-  function showDetail(id) {
-    const item = obligations.find(o => o.id === id);
-    if (!item) return;
-    openModal("Detalle de obligación", item.company, `<div class="modal-form">
-      <div class="field"><label>Empresa</label><div><strong>${esc(item.company)}</strong><div class="small-note">NIT ${esc(item.nit)}</div></div></div>
-      <div class="field"><label>Periodo y vencimiento</label><div>${esc(item.period)} · ${esc(fmtDate(item.due))}</div></div>
-      <div class="field"><label>Estado</label><div><span class="status ${statusClass(item.status)}">${esc(item.status)}</span></div></div>
-      <div class="field"><label>Fecha de pago</label><div>${esc(fmtDate(item.paidDate))}</div></div>
-      <div class="field"><label>Soporte (nombre ficticio)</label><div>${esc(item.support || "Sin soporte registrado")}</div></div>
-      <div class="field"><label>Observación</label><div>${esc(item.note || "Sin observaciones")}</div></div>
-    </div>`);
-  }
-  function showSummary() {
-    const rows = getFiltered();
-    const pending = rows.filter(o => o.status === "Pendiente" || o.status === "Pendiente de pago");
-    const paid = rows.filter(o => o.status === "Pagado");
-    openModal("Vista previa del resumen", "Ejemplo de informe que podría consultar un usuario.", `
-      <div class="form-hint">Esta es una vista previa local. No se envía correo ni se genera ningún documento real.</div>
-      <div class="stats-grid" style="grid-template-columns:repeat(3,minmax(0,1fr));margin:16px 0">
-        <div class="stat-card"><div class="stat-foot">Obligaciones</div><div class="stat-number" style="font-size:25px">${rows.length}</div></div>
-        <div class="stat-card"><div class="stat-foot">Pendientes</div><div class="stat-number" style="font-size:25px">${pending.length}</div></div>
-        <div class="stat-card"><div class="stat-foot">Pagadas</div><div class="stat-number" style="font-size:25px">${paid.length}</div></div>
-      </div>
-      <div style="max-height:220px;overflow:auto;border:1px solid var(--border);border-radius:10px">
-        <table style="min-width:420px"><thead><tr><th>Empresa</th><th>Vencimiento</th><th>Estado</th></tr></thead><tbody>
-        ${rows.slice(0,10).map(o=>`<tr><td>${esc(o.company)}</td><td>${esc(fmtDate(o.due))}</td><td>${esc(o.status)}</td></tr>`).join("")}
-        </tbody></table>
-      </div>`,
-      `<button class="btn" id="closeSummary">Cerrar</button><button class="btn btn-primary" id="simulateExport">Simular exportación</button>`,
-      () => {
-        $("closeSummary").addEventListener("click", closeModal);
-        $("simulateExport").addEventListener("click", () => { closeModal(); showToast("Exportación simulada","En esta versión no se descarga ni se envía ningún archivo.","▤"); addActivity("Vista previa de resumen consultada","Informe de obligaciones filtradas","▤"); });
-      });
-  }
-  const guide = [
-    {title:"Bienvenido al recorrido",desc:"Conoce los elementos principales del panel.",body:`<div class="form-hint">Este recorrido te guía por una simulación de un panel de obligaciones de seguridad social. Todo lo que ves utiliza datos inventados.</div><p style="font-size:13px;line-height:1.7;margin-top:15px">Puedes cerrar el recorrido en cualquier momento. Ninguna acción se conecta a un sistema externo ni persiste al cerrar o recargar la página.</p>`},
-    {title:"Filtra y consulta",desc:"Encuentra obligaciones por periodo, estado o empresa.",body:`<div class="guide-steps"><div class="guide-step"><span class="step-num">1</span><span>Define el rango con los campos <strong>Desde</strong> y <strong>Hasta</strong>.</span></div><div class="guide-step"><span class="step-num">2</span><span>Usa el selector de estado o busca por empresa, NIT o periodo.</span></div><div class="guide-step"><span class="step-num">3</span><span>Las tarjetas de resumen se actualizan con los resultados filtrados.</span></div></div>`},
-    {title:"Simula una gestión",desc:"Prueba las acciones sin realizar operaciones reales.",body:`<div class="guide-steps"><div class="guide-step"><span class="step-num">1</span><span>Pulsa <strong>Registrar pago</strong> en una obligación pendiente.</span></div><div class="guide-step"><span class="step-num">2</span><span>Ingresa una fecha y, si quieres, un nombre ficticio de soporte.</span></div><div class="guide-step"><span class="step-num">3</span><span>Guarda la simulación y observa cómo cambia el estado y la actividad reciente.</span></div></div><div class="form-hint">El campo de soporte almacena solo el nombre escrito. No selecciones ni subas documentos reales.</div>`},
-    {title:"Personaliza la experiencia",desc:"Prueba las paletas y la apariencia de la interfaz.",body:`<p style="font-size:13px;line-height:1.7">En la parte superior puedes seleccionar seis paletas de color y activar o desactivar el modo oscuro. Los cambios son visuales y no alteran la información.</p><div class="form-hint">Usa «Restablecer demo» para volver al conjunto original de datos ficticios.</div>`}
-  ];
-  function renderGuide() {
-    const g = guide[guideStep];
-    $("modalTitle").textContent = g.title;
-    $("modalDescription").textContent = g.desc;
-    $("modalBody").innerHTML = g.body;
-    $("guideProgressWrap").style.display = "block";
-    $("guideProgressBar").style.width = `${((guideStep+1)/guide.length)*100}%`;
-    $("modalFoot").innerHTML = `<span style="font-size:11px;color:var(--muted)">Paso ${guideStep+1} de ${guide.length}</span><div style="display:flex;gap:8px"><button class="btn" id="guideSkip">Salir</button>${guideStep>0?'<button class="btn" id="guidePrev">Anterior</button>':""}<button class="btn btn-primary" id="guideNext">${guideStep===guide.length-1?"Finalizar":"Siguiente →"}</button></div>`;
-    $("modalBackdrop").classList.add("open"); document.body.style.overflow="hidden";
-    $("guideSkip").addEventListener("click",closeModal);
-    if ($("guidePrev")) $("guidePrev").addEventListener("click",()=>{guideStep--;renderGuide();});
-    $("guideNext").addEventListener("click",()=>{if(guideStep<guide.length-1){guideStep++;renderGuide();}else{closeModal();showToast("Recorrido completado","Ya puedes explorar la demostración por tu cuenta.","✦");}});
-  }
-  function openGuide() { guideStep=0; renderGuide(); }
-  function resetDemo() {
-    openModal("Restablecer demostración","Volverás al conjunto inicial de datos ficticios.",`<div class="form-hint">Se desharán los cambios realizados en esta sesión, como pagos simulados y estados «No aplica». No se modifica ninguna fuente externa.</div><p style="font-size:13px">¿Quieres restablecer los datos de ejemplo?</p>`,
-      `<button class="btn" id="cancelReset">Cancelar</button><button class="btn btn-primary" id="confirmReset">Restablecer</button>`,
-      () => {
-        $("cancelReset").addEventListener("click",closeModal);
-        $("confirmReset").addEventListener("click",()=>{
-          obligations=structuredClone(seedData);
-          activity=[{icon:"↻",title:"Demostración restablecida",detail:"Datos ficticios originales restaurados"},{icon:"▤",title:"Panel de demostración iniciado",detail:"Sesión local · Sin conexión a servicios externos"}];
-          renderTable();renderActivity();closeModal();showToast("Demo restablecida","Se restauraron las obligaciones ficticias originales.");
-        });
-      });
-  }
-
-  document.querySelectorAll("[data-palette-choice]").forEach(btn => btn.addEventListener("click",()=>{
-    const palette=btn.dataset.paletteChoice;
-    document.body.dataset.palette=palette;
-    document.querySelectorAll("[data-palette-choice]").forEach(b=>b.setAttribute("aria-pressed",String(b===btn)));
-    showToast("Paleta actualizada",`Se aplicó la paleta ${btn.title}.`,"✦");
-  }));
-  $("themeToggle").addEventListener("click",()=>{
-    const dark=document.body.dataset.theme!=="dark";
-    document.body.dataset.theme=dark?"dark":"light";
-    $("themeToggle").textContent=dark?"☀":"☾";
-    $("themeToggle").setAttribute("aria-label",dark?"Activar modo claro":"Activar modo oscuro");
-    $("themeToggle").title=dark?"Cambiar a modo claro":"Cambiar a modo oscuro";
-  });
-  ["dateFrom","dateTo","statusFilter","searchInput","showResolved"].forEach(id=>$(id).addEventListener(id==="searchInput"?"input":"change",renderTable));
-  $("clearFilters").addEventListener("click",()=>{
-    $("dateFrom").value="2026-10-01";$("dateTo").value="2026-10-31";$("statusFilter").value="all";$("searchInput").value="";$("showResolved").checked=true;renderTable();
-  });
-  $("tableContainer").addEventListener("click",event=>{
-    const btn=event.target.closest("[data-action]");if(!btn)return;
-    const id=Number(btn.dataset.id);
-    if(btn.dataset.action==="pay")openPayment(id);
-    if(btn.dataset.action==="na")markNotApplicable(id);
-    if(btn.dataset.action==="detail")showDetail(id);
-  });
-  $("summaryButton").addEventListener("click",showSummary);
-  $("resetDemo").addEventListener("click",resetDemo);
-  $("openGuide").addEventListener("click",openGuide);
-  $("openGuideBottom").addEventListener("click",openGuide);
-  $("closeModal").addEventListener("click",closeModal);
-  $("modalBackdrop").addEventListener("click",e=>{if(e.target===$("modalBackdrop"))closeModal();});
-  document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
-
-  $("dateFrom").value="2026-10-01";
-  $("dateTo").value="2026-10-31";
-  renderTable();renderActivity();
-})();
-</script>
 </body>
 </html>
